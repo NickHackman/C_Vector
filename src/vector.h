@@ -175,17 +175,19 @@ static inline void __vector_set_capacity(void* vector, size_t capacity) {
  *
  * 	Return: void
  */
-#define vector_push_back(vector, x) \
+#define vector_push_back(vector, value) \
 	if (vector_capacity(vector) <= (vector_size(vector) + 1)) { \
 		vector = __vector_alloc(vector, (vector) ? ((size_t)(2 * \
 				vector_capacity(vector))) : ((size_t)12), sizeof(*(vector))); \
 	} \
-	vector[vector_size(vector)] = x; \
+	vector[vector_size(vector)] = value; \
 	__vector_set_size(vector, vector_size(vector) + 1);
 
 /*
  * Internal function:
  * Allocates space for vector when capacity needs to increase/decrease
+ *
+ * Requirements: new_capacity > 0 && size_of_item > 0
  *
  * Logic:
  * find size, if the vector != NULL take it's size, otherwise 0
@@ -308,7 +310,9 @@ static inline void vector_clear(void* vector) {
  * 	Return: void
  */
 #define vector_shrink_to_fit(vector) \
-	vector = __vector_alloc(vector, vector_size(vector), sizeof(*(vector)));
+	if (vector) { \
+		vector = __vector_alloc(vector, vector_size(vector), sizeof(*(vector))); \
+	}
 
 #ifdef VECTOR_SHRINK_ON_REMOVE
 
@@ -319,7 +323,7 @@ static inline void vector_clear(void* vector) {
  *
  * Params:
  *
- * 	self: the vector to modify
+ * 	vector: the vector to modify
  *
  * Time Complexity: Amortized constant
  *

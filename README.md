@@ -11,6 +11,35 @@ Library split into two header files
 
 *This library prefers inlined functions over macros due to their type checking and for better more descriptive function definitions for autocomplete engines, and uses macros only when completely necessary to maintain being generic*
 
+## Internal Representation
+
+```
+user pointer -------|
+                    v
+---------------------------------------------
+| size | capacity | 0 | 1 | 2 | 3 | 4 | ... |
+---------------------------------------------
+```
+
+vector[-2] = size, stored as `size_t`
+
+vector[-1] = capacity, stored as `size_t`
+
+then all remaining elements are of size `TYPE`
+
+#### Allocations
+
+```
+if (vector == NULL) {
+    new_vector = allocate 2 * sizeof(size_t) + 12 * sizeof(TYPE)
+} else {
+    new_vector = allocate 2 * sizeof(size_t) + 2 * capacity * sizeof(TYPE)
+}
+new_vector[0] = size;
+new_vector[1] = new_capacity
+vector = &(new_vector[2])
+```
+
 ## Core
 
 ```c
@@ -24,7 +53,7 @@ double* vector = NULL;
 |Function|Type|Time Complexity|Description|Example|
 |--------|----|---------------|-----------|-------|
 |vector_push_back|modifier|armotized constant|Added a new element of `TYPE` to the end of the `vector`|[Example](#push-back)|
-|**[default]** vector_pop_back|modifier|constant|Removes the last element from the `vector`, doesn't decrease capacity|[Example](#pop-back)|
+|**[DEFAULT]** vector_pop_back|modifier|constant|Removes the last element from the `vector`, doesn't decrease capacity|[Example](#pop-back)|
 |**[VECTOR_SHRINK_ON_REMOVE]** vector_pop_back|modifier|armotized constant| Removes the last element, but shrinks the capacity when `size == capacity / 4`|[Example](#pop-back)|
 |vector_shrink_to_fit|modifier|linear|Reallocates `vector` with capacity equivalent to size|[Example](#shirnk-to-fit)|
 |vector_clear|modifier|constant|Sets size to 0, doesn't change capacity|[Example](#clear)|
@@ -47,10 +76,9 @@ int main() {
 	vector_free(vector);
 }
 ```
-
 ### Pop Back
 
-**[Default]**
+**[DEFAULT]**
 ```c
 #include <stdio.h>
 #include "vector.h"
@@ -83,7 +111,6 @@ int main() {
 	vector_free(vector);
 }
 ```
-
 ### Shrink to fit
 ```c
 #include <stdio.h>
@@ -100,7 +127,6 @@ int main() {
 	vector_free(vector);
 }
 ```
-
 ### Clear
 ```c
 #include <stdio.h>
@@ -119,7 +145,6 @@ int main() {
 	// Values are never cleared they are just treated as if they don't exist
 	vector_free(vector);
 ```
-
 ### Size
 ```c
 #include <stdio.h>
@@ -132,7 +157,6 @@ int main() {
 	printf("Size = %lu\n", vector_size(vector)); // 100
 	vector_free(vector);
 ```
-
 ### Capacity
 ```c
 #include <stdio.h>
@@ -145,7 +169,6 @@ int main() {
 	printf("Size = %lu\n", vector_capacity(vector)); // 192
 	vector_free(vector);
 ```
-
 ### Front
 ```c
 #include <stdio.h>
