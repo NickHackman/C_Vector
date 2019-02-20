@@ -50,6 +50,43 @@
 	}
 
 /*
+ * Description: Deletes an element at a specified location
+ *
+ * Type: Modifier (Deletion)
+ *
+ * Params:
+ *
+ * 	vector: the vector to modify
+ *
+ * 	location: location to remove
+ *
+ * Time Complexity: linear
+ *
+ * Memory:
+ * if VECTOR_SHRINK_ON_REMOVE && size == capacity / 4
+ * -((capacity / 2) * sizeof(*(vector)))
+ * else
+ * 0
+ *
+ * Logic:
+ * if vector exists and location is less than size
+ *  	go from location to last element and move the value to remove over (via swap)
+ * pop_back
+ *
+ * Return: element removed
+ */
+#define vector_erase(vector, location) \
+	({ if (vector && location < vector_size(vector)) { \
+		unsigned char swap_temp[(signed)sizeof(*(vector))]; \
+		for (size_t i = location; i < vector_size(vector) - 1; i++) { \
+			memcpy(swap_temp, &vector[i], sizeof(*(vector))); \
+			vector[i] = vector[i + 1]; \
+	 		memcpy(&vector[i+1], &swap_temp, sizeof(*(vector))); \
+		} \
+	} \
+	vector_pop_back(vector); })
+
+/*
  * Description: Searches the vector, but only works for primitives
  *
  * Type: Search
