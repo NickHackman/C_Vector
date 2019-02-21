@@ -87,129 +87,6 @@
 	vector_pop_back(vector); })
 
 /*
- * Description: Searches the vector, but only works for primitives
- *
- * Type: Search
- *
- * Params:
- *
- * 	vector: the vector to search
- *
- * 	value: value to search for
- *
- * Time Complexity: linear
- *
- * Memory:
- * 0
- *
- * Return: 1 if found, -1 if not found
- */
-#define vector_find_basic(vector, value) ({\
-	int found = -1; \
-	if (sizeof(value) == sizeof(*(vector))) { \
-		for (size_t i = 0; found == -1 && i < vector_size(vector); i++) { \
-			if (vector[i] == value) { \
-				found = 1; \
-			} \
-		} \
-	} \
-	found; })
-
-/*
- * Description: Searches the vector, requires a function,
- * but can work for all values
- *
- * Type: Search
- *
- * Params:
- *
- * 	vector: the vector to search
- *
- * 	value: value to search for
- *
- * 	compare: returns 1 if the two void*s are equal
- *
- * Time Complexity: linear
- *
- * Memory:
- * 0
- *
- * Return: 1 if found, -1 if not found
- */
-int vector_find_complex(void** vector, void* value, int compare(void*, void*)) {
-	int found = -1;
-	for (size_t i = 0; !found && i < vector_size(vector); i++) {
-		if (compare(value, vector[i])) {
-			found = 1;
-		}
-	}
-	return found;
-}
-
-/*
- * Description: Searches the vector and returns the index, but only works on
- *  	primitives
- *
- * Type: Search
- *
- * Params:
- *
- * 	vector: the vector to search
- *
- * 	value: value to search for
- *
- * Time Complexity: linear
- *
- * Memory:
- * 0
- *
- * Return: a value < size if found otherwise size
- */
-#define vector_find_index_basic(vector, value) ({\
-	size_t index = vector_size(vector); \
-	if (sizeof(value) == sizeof(*(vector))) { \
-		for (size_t i = 0; index == vector_size(vector) && \
-				i < vector_size(vector); i++) { \
-			if (vector[i] == value) { \
-				index = i; \
-			} \
-		} \
-	} \
-	index; })
-
-/*
- * Description: Searches the vector, requires a function,
- *  	but can work for all values, and returns the index
- *
- * Type: Search
- *
- * Params:
- *
- * 	vector: the vector to search
- *
- * 	value: value to search for
- *
- * 	compare: returns 1 if the two void*s are equal
- *
- * Time Complexity: linear
- *
- * Memory:
- * 0
- *
- * Return: a value < size if found otherwise size
- */
-size_t vector_find_index_complex(void** vector, void* value,
-		int compare(void*, void*)) {
-	size_t index = vector_size(vector);
-	for (size_t i = 0; i < vector_size(vector); i++) {
-		if (compare(vector[i], value)) {
-			index = i;	
-		}
-	}
-	return index;
-}
-
-/*
  * Description: Frees all values contained inside the vector
  *
  * Type: Modifier (free)
@@ -218,7 +95,7 @@ size_t vector_find_index_complex(void** vector, void* value,
  *
  * 	vector: the vector to search
  *
- * 	free_inner: frees an element in the vector
+ * 	free_inner: function that frees an element in the vector
  *
  * Time Complexity: linear
  *
@@ -227,11 +104,10 @@ size_t vector_find_index_complex(void** vector, void* value,
  *
  * Return: void
  */
-void vector_free_all(void** vector, void free_inner(void*)) {
-	for (size_t i = vector_size(vector) - 1; i > 0; i++) {
-		free_inner(vector[i]);
-	}
+#define vector_free_all(vector, free_inner) \
+	for (size_t i = 0; i < vector_size(vector); i++) { \
+		(free_inner)(vector[i]); \
+	} \
 	vector_free(vector);
-}
 
 #endif // VECTOR_EXTRA_H
