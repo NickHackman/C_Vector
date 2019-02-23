@@ -171,7 +171,7 @@ static inline void __vector_set_capacity(void* vector, size_t capacity) {
  *
  * Memory:
  * 	Case of self->capacity == self->size:
- * 		sizeof(*(vector)) bytes * 2 * self->capacity
+ * 		sizeof(*(vector)) bytes * 2 * self->capacity + 2 * sizeof(size_t)
  *
  * 	Return: void
  */
@@ -334,10 +334,13 @@ static inline void vector_clear(void* vector) {
  * 	Return: last value in vector, must be freed
  */
 #define vector_pop_back(vector) \
-	({ if ((vector_capacity(vector) / 4) >= (vector_size(vector) - 1)) { \
-		vector = __vector_alloc(vector, vector_capacity(vector) / 2, sizeof(*(vector))); \
-	} \
-	((vector) ? (vector)[(((size_t*)vector)[-2]--) - 1] : 0); })
+	({ \
+		if ((vector_capacity(vector) / 4) >= (vector_size(vector) - 1)) { \
+			vector = __vector_alloc(vector, vector_capacity(vector) / 2, \
+					sizeof(*(vector))); \
+		} \
+		((vector) ? (vector)[(((size_t*)vector)[-2]--) - 1] : 0); \
+	})
 
 #else
 

@@ -5,7 +5,7 @@
 	#include "vector.h"
 #endif
 
-#include <string.h>
+#include <string.h> // memcpy, strlen
 
 /*
  * Description: Inserts element at a specific location,
@@ -25,7 +25,7 @@
  *
  * Memory:
  * 	Case of self->size == self->capacity:
- * 		self->capacity * 2
+ * 		self->capacity * 2 + 2 * sizeof(size_t)
  *
  * Return: void
  */
@@ -286,13 +286,13 @@
  * Time Complexity: linear
  *
  * Memory:
- * allocates a new vector with size & capacity enough to hold entire 
+ * allocates a new vector with capacity enough to hold entire 
  * 		string equivalent
  *
  * Return: a char* vector, not an array. Must be freed
  */
 #define vector_to_string(vector, to_string) \
-	({  \
+	({ \
 		char* string = __vector_alloc(NULL, vector_size(vector) * 5 + 4, \
 				sizeof(char)); \
 		vector_push_back(string, '['); \

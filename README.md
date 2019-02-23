@@ -58,7 +58,7 @@ struct X* vector = NULL;
 |--------|----|---------------|-----------|-------|
 |vector_push_back|insert|armotized constant|Added a new element of `TYPE` to the end of the `vector`|[Example](#push-back)|
 |**[DEFAULT]** vector_pop_back|delete|constant|Removes the last element from the `vector`, doesn't decrease capacity|[Example](#pop-back)|
-|**[VECTOR_SHRINK_ON_REMOVE]** vector_pop_back|delete|armotized constant| Removes the last element, but shrinks the capacity when `size == capacity / 4`|[Example](#pop-back)|
+|**[VECTOR_SHRINK_ON_REMOVE]** vector_pop_back|delete|armotized constant| Must `#define VECTOR_SHRINK_ON_REMOVE`. Removes the last element, but shrinks the capacity when `size == capacity / 4`|[Example](#pop-back)|
 |vector_shrink_to_fit|modifier|linear|Reallocates `vector` with capacity equivalent to size|[Example](#shirnk-to-fit)|
 |vector_clear|delete|constant|Sets size to 0, doesn't change capacity|[Example](#clear)|
 |vector_free|free|constant|Frees the array, but not any internal malloced elements|[Example](#free)|
