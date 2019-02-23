@@ -180,7 +180,7 @@ static inline void __vector_set_capacity(void* vector, size_t capacity) {
 		vector = __vector_alloc(vector, (vector) ? ((size_t)(2 * \
 				vector_capacity(vector))) : ((size_t)12), sizeof(*(vector))); \
 	} \
-	vector[vector_size(vector)] = value; \
+	vector[vector_size(vector)] = (value); \
 	__vector_set_size(vector, vector_size(vector) + 1);
 
 /*
