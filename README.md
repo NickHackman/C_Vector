@@ -1,5 +1,6 @@
 # C_Vector
 
+
 Personal interpretation and implementation of `std::vector` trying to maintain generics in C, while maintaining type safety and checks done by the compiler rather than using `void*`
 
 Library split into two header files 
@@ -10,6 +11,45 @@ Library split into two header files
 |extra|`vector_extra.h`|extra **unessential** functions|
 
 *This library prefers inlined functions over macros due to their type checking and for better more descriptive function definitions for autocomplete engines, and uses macros only when completely necessary to maintain being generic*
+
+## Installation
+
+#### Linux
+```shell
+$make install
+```
+installs headers to `/usr/local/share/include/c_vector`
+
+#### MacOS
+TODO
+
+#### Windows
+TODO
+
+## Uninstall
+
+#### Linux
+```shell
+$make clean
+```
+
+removes headers from `/usr/local/share/include/c_vector`
+
+#### MacOS
+TODO
+
+#### Windows
+TODO
+
+## Test
+
+```shell
+$make test
+```
+
+#### Extra
+TODO
+
 
 ## Internal Representation
 
@@ -85,7 +125,7 @@ struct X* vector = NULL;
 
 ### Push Back
 ```c
-#include "vector.h"
+#include <c_vector/vector.h>
 int main() {
 	int* vector = NULL;
 	for (int i = 0; i < 100; i++) {
@@ -99,7 +139,7 @@ int main() {
 **[DEFAULT]**
 ```c
 #include <stdio.h>
-#include "vector.h"
+#include <c_vector/vector.h>
 int main() {
 	int* vector = NULL;
 	for (int i = 0; i < 100; i++) {
@@ -116,7 +156,7 @@ int main() {
 ```c
 #define VECTOR_SHRINK_ON_REMOVE
 #include <stdio.h>
-#include "vector.h"
+#include <c_vector/vector.h>
 int main() {
 	int* vector = NULL;
 	for (int i = 0; i < 100; i++) {
@@ -132,7 +172,7 @@ int main() {
 ### Shrink to fit
 ```c
 #include <stdio.h>
-#include "vector.h"
+#include <c_vector/vector.h>
 int main() {
 	int* vector* = NULL;
 	for (int i = 0; i < 100; i++) {
@@ -148,7 +188,7 @@ int main() {
 ### Clear
 ```c
 #include <stdio.h>
-#include "vector.h"
+#include <c_vector/vector.h>
 int main() {
 	int* vector* = NULL;
 	for (int i = 0; i < 100; i++) {
@@ -166,7 +206,7 @@ int main() {
 ### Size
 ```c
 #include <stdio.h>
-#include "vector.h"
+#include <c_vector/vector.h>
 int main() {
 	int* vector* = NULL;
 	for (int i = 0; i < 100; i++) {
@@ -178,7 +218,7 @@ int main() {
 ### Capacity
 ```c
 #include <stdio.h>
-#include "vector.h"
+#include <c_vector/vector.h>
 int main() {
 	int* vector* = NULL;
 	for (int i = 0; i < 100; i++) {
@@ -190,7 +230,7 @@ int main() {
 ### Front
 ```c
 #include <stdio.h>
-#include "vector.h"
+#include <c_vector/vector.h>
 int main() {
 	int* vector* = NULL;
 	for (int i = 0; i < 100; i++) {
@@ -203,7 +243,7 @@ int main() {
 ### Back
 ```c
 #include <stdio.h>
-#include "vector.h"
+#include <c_vector/vector.h>
 int main() {
 	int* vector* = NULL;
 	for (int i = 0; i < 100; i++) {
@@ -219,8 +259,8 @@ int main() {
 ### Insert
 ```c
 #include <stdio.h>
-#include "vector_extra.h"
-// #include "vector.h" already included in vector_extra.h, but you can
+#include <c_vector/vector_extra.h>
+// #include <c_vector/vector.h> already included in vector_extra.h, but you can
 int main() {
 	int* vector = NULL;
 	for (int i = 0; i < 100; i++) {
@@ -237,8 +277,8 @@ int main() {
 ### Erase
 ```c
 #include <stdio.h>
-#include "vector_extra.h"
-// #include "vector.h" already included in vector_extra.h, but you can
+#include <c_vector/vector_extra.h>
+// #include <c_vector/vector.h> already included in vector_extra.h, but you can
 int main() {
 	int* vector = NULL;
 	for (int i = 0; i < 100; i++) {
@@ -256,8 +296,8 @@ int main() {
 ### Free All
 ```c
 #include <stdio.h>
-#include "vector_extra.h"
-// #include "vector.h" already included in vector_extra.h, but you can
+#include <c_vector/vector_extra.h>
+// #include <c_vector/vector.h> already included in vector_extra.h, but you can
 
 void free_string(char* str) {
 	free(str);
@@ -280,8 +320,8 @@ int main() {
 ### Filter
 ```c
 #include <stdio.h>
-#include "vector_extra.h"
-// #include "vector.h" already included in vector_extra.h, but you can
+#include <c_vector/vector_extra.h>
+// #include <c_vector/vector.h> already included in vector_extra.h, but you can
 
 int filter(int value) {
 	return value > 50;
@@ -312,8 +352,8 @@ int main() {
 ### Append vector
 ```c
 #include <stdio.h>
-#include "vector_extra.h"
-// #include "vector.h" already included in vector_extra.h, but you can
+#include <c_vector/vector_extra.h>
+// #include <c_vector/vector.h> already included in vector_extra.h, but you can
 
 int main() {
 	int* src = NULL;
@@ -335,8 +375,8 @@ int main() {
 ### Append array
 ```c
 #include <stdio.h>
-#include "vector_extra.h"
-// #include "vector.h" already included in vector_extra.h, but you can
+#include <c_vector/vector_extra.h>
+// #include <c_vector/vector.h> already included in vector_extra.h, but you can
 
 int main() {
 	int src[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}; 
@@ -355,8 +395,8 @@ int main() {
 ### To string
 ```c
 #include <stdio.h>
-#include "vector_extra.h"
-// #include "vector.h" already included in vector_extra.h, but you can
+#include <c_vector/vector_extra.h>
+// #include <c_vector/vector.h> already included in vector_extra.h, but you can
 
 char* int_to_string(int value) {
 	char* str = malloc(12); // enough to hold a 32 bit int
@@ -380,8 +420,8 @@ int main() {
 ### Find
 ```c
 #include <stdio.h>
-#include "vector_extra.h"
-// #include "vector.h" already included in vector_extra.h, but you can
+#include <c_vector/vector_extra.h>
+// #include <c_vector/vector.h> already included in vector_extra.h, but you can
 
 int int_equals(int x, int y) {
 	return x == y;
@@ -400,8 +440,8 @@ int main() {
 ### Find index
 ```c
 #include <stdio.h>
-#include "vector_extra.h"
-// #include "vector.h" already included in vector_extra.h, but you can
+#include <c_vector/vector_extra.h>
+// #include <c_vector/vector.h> already included in vector_extra.h, but you can
 
 int int_equals(int x, int y) {
 	return x == y;
