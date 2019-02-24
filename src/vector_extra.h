@@ -336,4 +336,29 @@
 		string; \
 	})
 
+/*
+ * Description: Reverses the vector
+ *
+ * Type: Modifier
+ *
+ * Params:
+ *
+ * 	vector: the vector to reverse/flip
+ *
+ * Time Complexity: linear
+ *
+ * Memory:
+ *
+ * 0
+ *
+ * Return: void
+ */
+#define vector_reverse(vector) \
+	unsigned char swap_temp[(signed)sizeof(*(vector))]; \
+	for (size_t i = 0; i < (vector_size(vector) / 2); i++) { \
+		memcpy(swap_temp, &vector[i], sizeof(*(vector))); \
+		vector[i] = vector[vector_size(vector) - (1 + i)]; \
+		memcpy(&vector[vector_size(vector) - (1 + i)], &swap_temp, sizeof(*(vector))); \
+	}
+
 #endif // VECTOR_EXTRA_H

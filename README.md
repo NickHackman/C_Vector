@@ -8,7 +8,7 @@ Library split into two header files
 |Category|Header name|description|Lines of Code|
 |--------|-----------|-----------|-------------|
 |core|`vector.h`|essential functions **only**|76|
-|extra|`vector_extra.h`|extra **unessential** functions|117|
+|extra|`vector_extra.h`|extra **unessential** functions|124|
 
 *This library prefers inlined functions over macros due to their type checking and for better more descriptive function definitions for autocomplete engines, and uses macros only when completely necessary to maintain being generic*
 
@@ -121,6 +121,7 @@ struct X* vector = NULL;
 |vector_to_string|to_string|linear|Returns the vector's string equivalent via a `function*` to_string, **Return value is a vector**, output: `[a, c, d, ..., z]`|[Example](#To-string)|
 |vector_find|search|linear|Searchs for a given value using a `function*` that implements `==`, 1 if found, -1 otherwise|[Example](#find)|
 |vector_find_index|search|linear|Searchs for a given value using a `function*` that implements `==`, index if found, otherwise size|[Example](#find-index)|
+|vector_reverse|modifier|linear|Reverses or flips the `vector`|[Example](#reverse)|
 
 *No function above except for `vector_free_all` frees inner data in the `vector`*
 
@@ -492,5 +493,28 @@ int main() {
 }
 ```
 
+### Reverse
+```c
+#include <stdio.h>
+#include <c_vector/vector_extra.h>
+// #include <c_vector/vector.h> already included in vector_extra.h, but you can
+
+int main() {
+	int* vector = NULL;
+	for (int i = 0; i < 10; i++) {
+		vector_push_back(vector, i);
+	}
+	printf("Before:\n");
+	for (size_t i = 0; i < vector_size(vector); i++) {
+		printf("%d ", vector[i]);
+	}
+	vector_reverse(vector);
+	printf("\nAfter:\n");
+	for (size_t i = 0; i < vector_size(vector); i++) {
+		printf("%d ", vector[i]);
+	}
+	vector_free(vector); 
+}
+```
 ## License
 [MIT](license)
