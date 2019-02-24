@@ -266,19 +266,49 @@ int pop_back_on_5() {
     return passed;
 }
 
+int reserve_lower_than_current_capacity() {
+    int* vector = NULL;
+    vector_push_back(vector, 1);
+    size_t capacity_before = vector_capacity(vector);
+    vector_reserve(vector, 0);
+    size_t capacity_after = vector_capacity(vector);
+    int passed = assert("core_test.c", 275, "reserve_lower_than_current_capacity", capacity_before == capacity_after);
+    vector_free(vector);
+    return passed;
+}
+
+int reserve_100_on_12() {
+    int* vector = NULL;
+    vector_push_back(vector, 1);
+    vector_reserve(vector, 100);
+    int passed = assert("core_test.c", 284, "reserve_100_on_12", vector_capacity(vector) == 100);
+    vector_free(vector);
+    return passed;
+}
+
+int push_back_plus_plus() {
+    int* vector = NULL;
+    int i = 0;
+    vector_push_back(vector, i++);
+    int passed = assert("core_test.c", 293, "push_back_plus_plus", vector_back(vector) == 0 && i == 1);
+    vector_free(vector);
+    return passed;
+}
+
 int main(void) {
-    const int TOTAL_TESTS = 31;
+    const int TOTAL_TESTS = 34;
     float passed = 0.0;
     passed += size_on_null() + size_on_1() + size_on_5()
               + capacity_on_null() + capacity_on_1() + capacity_on_12()
               + set_size_on_null() + set_size_on_1()
               + set_capacity_on_null() + set_capacity_on_1()
-              + push_back_on_1() + push_back_on_3() + push_back_on_100()
+              + push_back_on_1() + push_back_on_3() + push_back_on_100() + push_back_plus_plus()
               + empty_on_null() + empty_on_0() + empty_on_1()
               + clear_on_0() + clear_on_1() + clear_on_3()
               + back_on_null() + back_on_1() + back_on_100()
               + front_on_null() + front_on_1() + front_on_100()
               + shrink_to_fit_on_null() + shrink_to_fit_on_0() + shrink_to_fit_on_5()
-              + pop_back_on_null() + pop_back_on_1() + pop_back_on_5();
+              + pop_back_on_null() + pop_back_on_1() + pop_back_on_5()
+              + reserve_lower_than_current_capacity() + reserve_100_on_12();
     printf("%.0f/%d passed, percentage: %f%%\n", passed, TOTAL_TESTS, passed/TOTAL_TESTS * 100);
 }

@@ -47,10 +47,6 @@ TODO
 $make test
 ```
 
-#### Extra
-TODO
-
-
 ## Internal Representation
 
 ```

@@ -254,7 +254,7 @@
 	({ \
 		int found = -1; \
 		for (size_t i = 0; found == -1 && i < vector_size(vector); i++) { \
-			if (equals(vector[i], value)) { \
+			if (equals((value), vector[i])) { \
 				found = 1; \
 			} \
 		} \
@@ -287,7 +287,7 @@
 		size_t found = vector_size(vector); \
 		for (size_t i = 0; found == vector_size(vector) && \
 				i < vector_size(vector); i++) { \
-			if (equals(vector[i], value)) { \
+			if (equals(vector[i], (value))) { \
 				found = i; \
 			} \
 		} \
