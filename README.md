@@ -171,7 +171,7 @@ int main() {
 	vector_free(vector);
 }
 ```
-### Shrink to fit
+### Shrink To Fit
 ```c
 #include <stdio.h>
 #include <c_vector/vector.h>
@@ -253,6 +253,19 @@ int main() {
 	}
 	// Equivanlent to vector[vector_size(vector) - 1], but returns 0/NULL if vector == NULL
 	printf("Back = %d\n", vector_back(vector)); // 99
+	vector_free(vector);
+```
+### Empty
+```c
+#include <stdio.h>
+#include <c_vector/vector.h>
+int main() {
+	int* vector* = NULL;
+	printf("Vector is empty: %d\n", vector_empty(vector)); // Vector is empty: 1
+	for (int i = 0; i < 100; i++) {
+		vector_push_back(vector, i);
+	}
+	printf("Vector is empty: %d\n", vector_empty(vector)); // Vector is empty: 0
 	vector_free(vector);
 ```
 
