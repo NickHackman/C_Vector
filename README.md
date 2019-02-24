@@ -7,7 +7,7 @@ Library split into two header files
 
 |Category|Header name|description|Lines of Code|
 |--------|-----------|-----------|-------------|
-|core|`vector.h`|essential functions **only**|76|
+|core|`vector.h`|essential functions **only**|78|
 |extra|`vector_extra.h`|extra **unessential** functions|124|
 
 *This library prefers inlined functions over macros due to their type checking and for better more descriptive function definitions for autocomplete engines, and uses macros only when completely necessary to maintain being generic*
@@ -103,6 +103,7 @@ struct X* vector = NULL;
 |vector_capacity|accessor| constant|Returns the actual size of the `vector`|[Example](#capacity)|
 |vector_front|accessor|constant|Returns the first element in the `vector` of `TYPE`|[Example](#front)|
 |vector_empty|accessor|constant|Returns `true` if the vector is `NULL` or its size is 0|[Example](#empty)|
+|vector_init|init|constant|Creates a new vector with a given capacity. **Not Mandatory**|[Example](#init)|
 
 ## Extra
 
@@ -197,6 +198,21 @@ int main() {
 	}
 	printf("Capacity = %lu\n", vector_capacity(vector)); // 101
 	vector_reserve(vector, 10); // Does nothing, 10 isn't greater than 101
+	printf("Capacity = %lu\n", vector_capacity(vector)); // 101
+	vector_free(vector);
+}
+```
+### Init
+```c
+#include <stdio.h>
+#include <c_vector/vector.h>
+int main() {
+	int* vector* = vector_init(int, 101); // vector_init isn't mandatory, but is equivalent to
+	// int* vector = NULL;
+	// vector_reserve(vector, 101); but in 1 statement
+	for (int i = 0; i < 100; i++) {
+		vector_push_back(vector, i);
+	}
 	printf("Capacity = %lu\n", vector_capacity(vector)); // 101
 	vector_free(vector);
 }

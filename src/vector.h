@@ -302,6 +302,28 @@ static inline void vector_clear(void* vector) {
 }
 
 /*
+ * Description: Creates a new vector with a capacity = to the provided capacity
+ *
+ * Type: Init
+ *
+ * Params:
+ *
+ * 	type: type of data
+ *
+ * 	capacity: new capacity to set vector to
+ *
+ * Time Complexity: Constant
+ *
+ * Memory:
+ *
+ * 	sizeof(type) * capacity + 2 * sizeof(size_t)
+ *
+ * 	Return: void* (the new vector)
+ */
+#define vector_init(type, capacity) \
+	__vector_alloc(NULL, capacity, sizeof(type));
+
+/*
  * Description: Returns the last element in the Vector
  *
  * Type: Accessor
