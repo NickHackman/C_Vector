@@ -115,8 +115,8 @@ struct X* vector = NULL;
 |vector_append_vector|append|linear|Appends 2nd argument into 1st argument, calls `vector_free` on 2nd| [Example](#append-vector)|
 |vector_append_array|append|linear|Appends n elements of 2nd argument into 1st argument, doesn't free anything| [Example](#append-array)|
 |vector_to_string|to_string|linear|Returns the vector's string equivalent via a `function*` to_string, **Return value is a vector**, output: `[a, c, d, ..., z]`|[Example](#To-string)|
-|vector_find|search|linear|Searchs for a given value using a `function*` that implements `==`, 1 if found, -1 otherwise|[Example](#find)|
-|vector_find_index|search|linear|Searchs for a given value using a `function*` that implements `==`, index if found, otherwise size|[Example](#find-index)|
+|vector_find|search|linear|Searchs for a given value using a `function*` that implements `==`, 1 if found, -1 otherwise. **multiple evaluations**|[Example](#find)|
+|vector_find_index|search|linear|Searchs for a given value using a `function*` that implements `==`, index if found, otherwise size. **multiple evaluations**|[Example](#find-index)|
 |vector_reverse|modifier|linear|Reverses or flips the `vector`|[Example](#reverse)|
 
 *No function above except for `vector_free_all` frees inner data in the `vector`*
