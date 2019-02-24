@@ -121,6 +121,8 @@ struct X* vector = NULL;
 |vector_find|search|linear|Searchs for a given value using a `function*` that implements `==`, 1 if found, -1 otherwise|[Example](#find)|
 |vector_find_index|search|linear|Searchs for a given value using a `function*` that implements `==`, index if found, otherwise size|[Example](#find-index)|
 
+*No function above except for `vector_free_all` frees inner data in the `vector`*
+
 ## Core Examples
 
 ### Push Back
@@ -452,7 +454,13 @@ int main() {
 	for (int i = 0; i < 10; i++) {
 		vector_push_back(vector, i);
 	}
-	printf("Found 9 = %d\n", vector_find_index(vector, 9, int_equals)); // 9
+	printf("Found 9 = vector[%d]\n", vector_find_index(vector, 9, int_equals)); 
+	// Found 9 = vector[9]
+	printf("Found 100 = vector[%d]\n", vector_find_index(vector, 100, int_equals)); 
+	// Found 100 = vector[10], which is size, aka not found
 	vector_free(vector); 
 }
 ```
+
+## License
+[MIT](license)
