@@ -13,7 +13,11 @@ SRC = $(shell find $(SRC_PATH) -name '*.$(HEADER_EXTENSION)')
 UNAME = $(shell uname)
 
 .PHONY: default_target
-default_target: install
+default_target:
+	@echo "C_Vector Options:"
+	@printf "\tmake install \n\t\t Install c_vector headers on a Linux machine [Requires Root]\n"
+	@printf "\tmake clean \n\t\t Remove c_vector headers on a Linux machine [Requires Root]\n"
+	@printf "\tmake test \\n\t\t Run the test cases for both core and extra\n"
 
 .PHONY: install
 install:
