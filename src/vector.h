@@ -238,7 +238,7 @@ static inline void* __vector_alloc(void* vector, size_t new_capacity, size_t siz
  *
  * Params:
  *
- * 	self: Vector to query the size of
+ * 	vector: Vector to query the size of
  *
  * Time Complexity: Constant
  *
@@ -253,6 +253,32 @@ static inline void* __vector_alloc(void* vector, size_t new_capacity, size_t siz
 static inline int vector_empty(void* vector) {
 	return vector_size(vector) == 0;
 }
+
+/*
+ * Description: Reallocates vector with new_capacity as a long as
+ * 		new_capacity >= capacity
+ *
+ * Type: Modifier
+ *
+ * Params:
+ *
+ * 	vector: to change the capacity of
+ *
+ * 	new_capacity: capacity to set it to
+ *
+ * Time Complexity: Linear
+ *
+ * Memory:
+ *
+ * 	2 * sizeof(size_t) + new_capacity * sizeof(*(vector))
+ * 		
+ *
+ * Return: void
+ */
+#define vector_reserve(vector, new_capacity) \
+	if (new_capacity >= vector_capacity(vector)) { \
+		vector = __vector_alloc(vector, new_capacity, sizeof(*(vector))); \
+	}
 
 /*
  * Description: Sets size to 0, capacity remains the same

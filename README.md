@@ -7,7 +7,7 @@ Library split into two header files
 
 |Category|Header name|description|Lines of Code|
 |--------|-----------|-----------|-------------|
-|core|`vector.h`|essential functions **only**|72|
+|core|`vector.h`|essential functions **only**|76|
 |extra|`vector_extra.h`|extra **unessential** functions|117|
 
 *This library prefers inlined functions over macros due to their type checking and for better more descriptive function definitions for autocomplete engines, and uses macros only when completely necessary to maintain being generic*
@@ -100,6 +100,7 @@ struct X* vector = NULL;
 |**[DEFAULT]** vector_pop_back|delete|constant|Removes the last element from the `vector`, doesn't decrease capacity|[Example](#pop-back)|
 |**[VECTOR_SHRINK_ON_REMOVE]** vector_pop_back|delete|armotized constant| Must `#define VECTOR_SHRINK_ON_REMOVE`. Removes the last element, but shrinks the capacity when `size == capacity / 4`|[Example](#pop-back)|
 |vector_shrink_to_fit|modifier|linear|Reallocates `vector` with capacity equivalent to size|[Example](#shrink-to-fit)|
+|vector_reserve|modifier|linear|Increases capacity to new_capacity, as long as it's greater than current capacity|[Example](#reserve)|
 |vector_clear|delete|constant|Sets size to 0, doesn't change capacity|[Example](#clear)|
 |vector_free|free|constant|Frees the array, but not any internal malloced elements|[Example](#free)|
 |vector_size|accessor|constant|Returns the user seen size of the `vector`|[Example](#size)|
@@ -184,6 +185,22 @@ int main() {
 	printf("Capacity Before Shrink = %lu\n", vector_capacity(vector)); // 192
 	vector_shrink_to_fit(vector);
 	printf("Capacity After Shrink = %lu\n", vector_capacity(vector)); // 100
+	vector_free(vector);
+}
+```
+### Reserve
+```c
+#include <stdio.h>
+#include <c_vector/vector.h>
+int main() {
+	int* vector* = NULL;
+	vector_reserve(vector, 101); // prevents any allocations from push_back
+	for (int i = 0; i < 100; i++) {
+		vector_push_back(vector, i);
+	}
+	printf("Capacity = %lu\n", vector_capacity(vector)); // 101
+	vector_reserve(vector, 10); // Does nothing, 10 isn't greater than 101
+	printf("Capacity = %lu\n", vector_capacity(vector)); // 101
 	vector_free(vector);
 }
 ```
