@@ -53,23 +53,23 @@
  * Return: void
  */
 #define vector_insert(vector, location, value) \
-	if (!vector_size(vector) || location >= vector_size(vector)) { \
-		vector_push_back(vector, value); \
+	if (!vector_size((vector)) || (location) >= vector_size((vector))) { \
+		vector_push_back((vector), (value)); \
 	} else { \
-		if ((vector_size(vector) + 1) >= vector_capacity(vector)) { \
-			vector = __vector_alloc(vector, (vector) ? ((size_t)(2 * \
-					vector_capacity(vector))) : ((size_t)12), sizeof(*(vector))); \
+		if ((vector_size((vector)) + 1) >= vector_capacity((vector))) { \
+			vector = __vector_alloc((vector), (vector) ? ((size_t)(2 * \
+					vector_capacity((vector))) : ((size_t)12), sizeof(*(vector))); \
 		} \
-		unsigned char swap_temp[(signed)sizeof(*(vector))]; \
-		unsigned char swap_temp1[(signed)sizeof(*(vector))]; \
-		memcpy(swap_temp, &vector[location], sizeof(*(vector))); \
-		vector[location] = value; \
-		for (size_t i = location + 1; i < vector_size(vector) + 1; i++) { \
-			memcpy(swap_temp1, &vector[i], sizeof(*(vector))); \
-			memcpy(&vector[i], &swap_temp, sizeof(*(vector))); \
-			memcpy(swap_temp, swap_temp1, sizeof(*(vector))); \
+		unsigned char __swap_temp[(signed)sizeof(*(vector))]; \
+		unsigned char __swap_temp1[(signed)sizeof(*(vector))]; \
+		memcpy(__swap_temp, &vector[location], sizeof(*(vector))); \
+		vector[(location)] = (value); \
+		for (size_t __i = (location) + 1; __i < vector_size((vector)) + 1; __i++) { \
+			memcpy(__swap_temp1, &(vector)[__i], sizeof(*(vector))); \
+			memcpy(&(vector)[__i], &__swap_temp, sizeof(*(vector))); \
+			memcpy(__swap_temp, __swap_temp1, sizeof(*(vector))); \
 		} \
-		__vector_set_size(vector, vector_size(vector) + 1); \
+		__vector_set_size((vector), vector_size((vector)) + 1); \
 	}
 
 /*
@@ -100,15 +100,15 @@
  */
 #define vector_erase(vector, location) \
 	({  \
-		if (vector && location < vector_size(vector)) { \
-			unsigned char swap_temp[(signed)sizeof(*(vector))]; \
-			for (size_t i = location; i < vector_size(vector) - 1; i++) { \
-				memcpy(swap_temp, &vector[i], sizeof(*(vector))); \
-				vector[i] = vector[i + 1]; \
-	 			memcpy(&vector[i+1], &swap_temp, sizeof(*(vector))); \
+		if ((vector) && (location) < vector_size((vector))) { \
+			unsigned char __swap_temp[(signed)sizeof(*(vector))]; \
+			for (size_t __i = (location); __i < vector_size((vector)) - 1; __i++) { \
+				memcpy(__swap_temp, &(vector)[__i], sizeof(*(vector))); \
+				(vector)[__i] = (vector)[__i + 1]; \
+	 			memcpy(&(vector)[__i+1], &__swap_temp, sizeof(*(vector))); \
 			} \
 		} \
-		vector_pop_back(vector); \
+		vector_pop_back((vector)); \
 	})
 
 /*
@@ -133,20 +133,20 @@
  * Return: void
  */
 #define vector_filter(vector, filter, removed) \
-	if (vector_capacity(removed) <= vector_capacity(vector)) { \
-		removed = __vector_alloc(removed, vector_capacity(vector) + \
-				vector_capacity(removed), sizeof(*(vector))); \
+	if (vector_capacity((removed)) <= vector_capacity((vector))) { \
+		(removed) = __vector_alloc((removed), vector_capacity((vector)) + \
+				vector_capacity((removed), sizeof(*(vector))); \
 	} \
-	size_t move_count = 0; \
-	for (size_t i = 0; i < vector_size(vector); i++) { \
-		if (filter(vector[i])) { \
-			vector[i - move_count] = vector[i]; \
+	size_t __move_count = 0; \
+	for (size_t __i = 0; __i < vector_size((vector)); __i++) { \
+		if (filter(vector[__i])) { \
+			(vector)[__i - __move_count] = (vector)[__i]; \
 		} else { \
-			move_count++; \
-			vector_push_back(removed, vector[i]); \
+			__move_count++; \
+			vector_push_back((removed), (vector)[__i]); \
 		} \
 	} \
-	__vector_set_size(vector, vector_size(vector) - move_count);
+	__vector_set_size((vector), vector_size((vector)) - __move_count);
 
 /*
  * Description: Appends all values in src to dest, frees src's array
@@ -167,14 +167,14 @@
  * Return: void
  */
 #define vector_append_vector(dest, src) \
-	if (vector_capacity(dest) <= vector_capacity(src)) { \
-		dest = __vector_alloc(dest, vector_capacity(src) + \
-				vector_capacity(dest), sizeof(*(src))); \
+	if (vector_capacity((dest)) <= vector_capacity((src))) { \
+		dest = __vector_alloc(dest, vector_capacity((src)) + \
+				vector_capacity((dest)), sizeof(*(src))); \
 	} \
-	for (size_t i = 0; i < vector_size(src); i++) { \
-		vector_push_back(dest, src[i]); \
+	for (size_t __i = 0; __i < vector_size((src)); __i++) { \
+		vector_push_back((dest), (src)[__i]); \
 	} \
-	vector_free(src);
+	vector_free((src));
 
 /*
  * Description: Appends n values in src to dest, doesn't free src
@@ -197,12 +197,12 @@
  * Return: void
  */
 #define vector_append_array(dest, src, n) \
-	if (vector_capacity(dest) <= n) { \
-		dest = __vector_alloc(dest, 2 * (vector_capacity(dest) + n), \
+	if (vector_capacity(dest) <= (n)) { \
+		(dest) = __vector_alloc((dest), 2 * (vector_capacity((dest)) + (n)), \
 				sizeof(*(src))); \
 	} \
-	for (size_t i = 0; i < n; i++) { \
-		vector_push_back(dest, src[i]); \
+	for (size_t __i = 0; __i < (n); __i++) { \
+		vector_push_back((dest), (src)[__i]); \
 	}
 
 /*
@@ -224,10 +224,10 @@
  * Return: void
  */
 #define vector_free_all(vector, free_inner) \
-	for (size_t i = 0; i < vector_size(vector); i++) { \
-		(free_inner)(vector[i]); \
+	for (size_t __i = 0; __i < vector_size((vector)); __i++) { \
+		(free_inner)((vector)[__i]); \
 	} \
-	vector_free(vector);
+	vector_free((vector));
 
 /*
  * Description: Searches for a value, using the function equals and returns
@@ -252,13 +252,13 @@
  */
 #define vector_find(vector, value, equals) \
 	({ \
-		int found = -1; \
-		for (size_t i = 0; found == -1 && i < vector_size(vector); i++) { \
-			if (equals((value), vector[i])) { \
-				found = 1; \
+		int __found = -1; \
+		for (size_t __i = 0; __found == -1 && __i < vector_size((vector)); __i++) { \
+			if ((equals)((value), (vector)[__i])) { \
+				__found = 1; \
 			} \
 		} \
-		found; \
+		__found; \
 	 })
 
 /*
@@ -284,14 +284,14 @@
  */
 #define vector_find_index(vector, value, equals) \
 	({ \
-		size_t found = vector_size(vector); \
-		for (size_t i = 0; found == vector_size(vector) && \
-				i < vector_size(vector); i++) { \
-			if (equals(vector[i], (value))) { \
-				found = i; \
+		size_t __found = vector_size(vector); \
+		for (size_t __i = 0; __found == vector_size((vector)) && \
+				__i < vector_size((vector)); __i++) { \
+			if ((equals)((vector)[__i], (value))) { \
+				__found = __i; \
 			} \
 		} \
-		found; \
+		__found; \
 	 })
 
 /*
@@ -316,24 +316,24 @@
  */
 #define vector_to_string(vector, to_string) \
 	({ \
-		char* string = __vector_alloc(NULL, vector_size(vector) * 5 + 4, \
+		char* __string = __vector_alloc(NULL, vector_size((vector)) * 5 + 4, \
 				sizeof(char)); \
-		vector_push_back(string, '['); \
-		for (size_t i = 0; i < vector_size(vector); i++) { \
-			char* str = to_string(vector[i]); \
-			size_t len = strlen(str); \
-			for (size_t j = 0; j < len; j++) { \
-				vector_push_back(string, str[j]); \
+		vector_push_back(__string, '['); \
+		for (size_t __i = 0; __i < vector_size((vector)); __i++) { \
+			char* __str = to_string((vector)[__i]); \
+			size_t __len = strlen(__str); \
+			for (size_t __j = 0; __j < __len; __j++) { \
+				vector_push_back(__string, __str[__j]); \
 			} \
-			free(str); \
-			if (i < (vector_size(vector) - 1)) { \
-				vector_push_back(string, ','); \
-				vector_push_back(string, ' '); \
+			free(__str); \
+			if (__i < (vector_size((vector)) - 1)) { \
+				vector_push_back(__string, ','); \
+				vector_push_back(__string, ' '); \
 			} \
 		} \
-		vector_push_back(string, ']'); \
-		vector_push_back(string, '\0'); \
-		string; \
+		vector_push_back(__string, ']'); \
+		vector_push_back(__string, '\0'); \
+		__string; \
 	})
 
 /*

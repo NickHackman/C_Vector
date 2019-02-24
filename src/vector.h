@@ -176,7 +176,7 @@ static inline void __vector_set_capacity(void* vector, size_t capacity) {
  */
 #define vector_free(vector) \
 	if (vector) { \
-		free(&((size_t*)vector)[-2]); \
+		free(&((size_t*)(vector))[-2]); \
 	}
 
 /*
@@ -276,8 +276,8 @@ static inline int vector_empty(void* vector) {
  * Return: void
  */
 #define vector_reserve(vector, new_capacity) \
-	if (new_capacity >= vector_capacity(vector)) { \
-		vector = __vector_alloc(vector, new_capacity, sizeof(*(vector))); \
+	if ((new_capacity) >= vector_capacity(vector)) { \
+		vector = __vector_alloc((vector), (new_capacity), sizeof(*(vector))); \
 	}
 
 /*
@@ -321,7 +321,7 @@ static inline void vector_clear(void* vector) {
  * 	Return: void* (the new vector)
  */
 #define vector_init(type, capacity) \
-	__vector_alloc(NULL, capacity, sizeof(type));
+	__vector_alloc(NULL, capacity, sizeof((type)));
 
 /*
  * Description: Returns the last element in the Vector
@@ -341,7 +341,7 @@ static inline void vector_clear(void* vector) {
  * 	Return: value of the last element, or 0\NULL if empty
  */
 #define vector_back(vector) \
-	((vector) ? vector[vector_size(vector) - 1] : 0)
+	((vector) ? (vector)[vector_size(vector) - 1] : 0)
 
 /*
  * Description: Returns the first element in the Vector
@@ -361,7 +361,7 @@ static inline void vector_clear(void* vector) {
  * 	Return: value of the first element or 0\NULL if empty
  */
 #define vector_front(vec) \
-	((vector) ? vector[0] : 0)
+	((vector) ? (vector)[0] : 0)
 
 /*
  * Description: Shrinks the capacity to the size 
@@ -382,7 +382,7 @@ static inline void vector_clear(void* vector) {
  */
 #define vector_shrink_to_fit(vector) \
 	if (vector) { \
-		vector = __vector_alloc(vector, vector_size(vector), sizeof(*(vector))); \
+		vector = __vector_alloc((vector), vector_size((vector)), sizeof(*(vector))); \
 	}
 
 #ifdef VECTOR_SHRINK_ON_REMOVE
@@ -410,7 +410,7 @@ static inline void vector_clear(void* vector) {
 			vector = __vector_alloc(vector, vector_capacity(vector) / 2, \
 					sizeof(*(vector))); \
 		} \
-		((vector) ? (vector)[(((size_t*)vector)[-2]--) - 1] : 0); \
+		((vector) ? (vector)[(((size_t*)(vector))[-2]--) - 1] : 0); \
 	})
 
 #else
@@ -432,7 +432,7 @@ static inline void vector_clear(void* vector) {
  * 	Return: last value in vector, must be freed, or returns 0/NULL
  */
 #define vector_pop_back(vector) \
-	((vector) ? (vector)[(((size_t*)vector)[-2]--) - 1] : 0)
+	((vector) ? (vector)[(((size_t*)(vector))[-2]--) - 1] : 0)
 
 
 #endif //VECTOR_SHRINK_ON_REMOVE
