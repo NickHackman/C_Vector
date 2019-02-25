@@ -321,7 +321,7 @@ static inline void vector_clear(void* vector) {
  * 	Return: void* (the new vector)
  */
 #define vector_init(type, capacity) \
-	__vector_alloc(NULL, capacity, sizeof((type)));
+	__vector_alloc(NULL, capacity, sizeof(type));
 
 /*
  * Description: Returns the last element in the Vector

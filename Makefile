@@ -1,5 +1,5 @@
 # path #
-LINUX_INCLUDE_PATH = /usr/include
+LINUX_INCLUDE_PATH = /usr/local/include
 
 # name #
 LIB_NAME = c_vector
