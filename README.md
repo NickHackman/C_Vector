@@ -1,50 +1,29 @@
 # C_Vector
 
 
-Personal interpretation and implementation of `std::vector` trying to maintain generics in C, while maintaining type safety and checks done by the compiler rather than using `void*`
-
-Library split into two header files 
-
-|Category|Header name|description|Lines of Code|
-|--------|-----------|-----------|-------------|
-|core|`vector.h`|essential functions **only**|78|
-|extra|`vector_extra.h`|extra **unessential** functions|124|
+Personal interpretation and implementation of `std::vector` trying to maintain generics in C, while maintaining type safety and checks done by the compiler rather than using `void*` **only** 78 lines of code
 
 *This library prefers inlined functions over macros due to their type checking and for better more descriptive function definitions for autocomplete engines, and uses macros only when completely necessary to maintain being generic*
 
 ## Installation
 
-#### Linux
 ```shell
-$make install
+$ make install
 ```
 installs headers to `/usr/local/share/include/c_vector`
 
-#### MacOS
-TODO
-
-#### Windows
-TODO
-
 ## Uninstall
 
-#### Linux
 ```shell
-$make clean
+$ make clean
 ```
 
 removes headers from `/usr/local/share/include/c_vector`
 
-#### MacOS
-TODO
-
-#### Windows
-TODO
-
 ## Test
 
 ```shell
-$make test
+$ make test
 ```
 
 ## Internal Representation
@@ -87,7 +66,7 @@ struct X* vector = NULL;
 // etc
 ```
 
-## Core
+## Functions
 
 
 |Function|Type|Time Complexity|Description|Example|
@@ -105,24 +84,7 @@ struct X* vector = NULL;
 |vector_empty|accessor|constant|Returns `true` if the vector is `NULL` or its size is 0|[Example](#empty)|
 |vector_init|init|constant|Creates a new vector with a given capacity. **Not Mandatory**|[Example](#init)|
 
-## Extra
-
-|Function|Type|Time Complexity|Description|Example|
-|--------|----|---------------|-----------|-------|
-|vector_insert|insert|linear|Insert an element at a specified location| [Example](#insert)|
-|vector_erase|delete|linear|Delete an element at a specified location| [Example](#erase)|
-|vector_free_all|free|linear|Frees all memory in vector by repeated calling a function| [Example](#free-all)|
-|vector_filter|modifier|linear|Filters first argument via function, all values removed are put into 3rd argument| [Example](#filter)|
-|vector_append_vector|append|linear|Appends 2nd argument into 1st argument, calls `vector_free` on 2nd| [Example](#append-vector)|
-|vector_append_array|append|linear|Appends n elements of 2nd argument into 1st argument, doesn't free anything| [Example](#append-array)|
-|vector_to_string|to_string|linear|Returns the vector's string equivalent via a `function*` to_string, **Return value is a vector**, output: `[a, c, d, ..., z]`|[Example](#To-string)|
-|vector_find|search|linear|Searchs for a given value using a `function*` that implements `==`, 1 if found, -1 otherwise. **multiple evaluations**|[Example](#find)|
-|vector_find_index|search|linear|Searchs for a given value using a `function*` that implements `==`, index if found, otherwise size. **multiple evaluations**|[Example](#find-index)|
-|vector_reverse|modifier|linear|Reverses or flips the `vector`|[Example](#reverse)|
-
-*No function above except for `vector_free_all` frees inner data in the `vector`*
-
-## Core Examples
+## Examples
 
 ### Push Back
 ```c
@@ -297,236 +259,6 @@ int main() {
 	}
 	printf("Vector is empty: %d\n", vector_empty(vector)); // Vector is empty: 0
 	vector_free(vector);
-```
-
-## Extra Examples
-
-### Insert
-```c
-#include <stdio.h>
-#include <c_vector/vector_extra.h>
-// #include <c_vector/vector.h> already included in vector_extra.h, but you can
-int main() {
-	int* vector = NULL;
-	for (int i = 0; i < 100; i++) {
-		vector_push_back(vector, i);
-	}
-	vector_insert(vector, 4, -5); // [0, 1, 2, 3, -5, 4, 5, 6, ...]
-	for (size_t i = 0; i < vector_size(vector); i++) {
-		printf("%d ", vector[i]);
-	}
-	vector_free(vector);
-}
-```
-
-### Erase
-```c
-#include <stdio.h>
-#include <c_vector/vector_extra.h>
-// #include <c_vector/vector.h> already included in vector_extra.h, but you can
-int main() {
-	int* vector = NULL;
-	for (int i = 0; i < 100; i++) {
-		vector_push_back(vector, i);
-	}
-	vector_insert(vector, 4, -5); // [0, 1, 2, 3, -5, 4, 5, 6, ...]
-	vector_erase(vector, 4); // [0, 1, 2, 3, 4, 5, 6, ...]
-	for (size_t i = 0; i < vector_size(vector); i++) {
-		printf("%d ", vector[i]);
-	}
-	vector_free(vector);
-}
-```
-
-### Free All
-```c
-#include <stdio.h>
-#include <c_vector/vector_extra.h>
-// #include <c_vector/vector.h> already included in vector_extra.h, but you can
-
-void free_string(char* str) {
-	free(str);
-}
-
-int main() {
-	char** vector = NULL;
-	for (int i = 0; i < 100; i++) {
-		char* string = malloc(3 * sizeof(char));
-		strcpy(string, "Hi");
-		vector_push_back(vector, string);
-	}
-	for (size_t i = 0; i < vector_size(vector); i++) {
-		printf("%s ", vector[i]);
-	}
-	vector_free_all(vector, free_string);
-}
-```
-
-### Filter
-```c
-#include <stdio.h>
-#include <c_vector/vector_extra.h>
-// #include <c_vector/vector.h> already included in vector_extra.h, but you can
-
-int filter(int value) {
-	return value > 50;
-}
-
-int main() {
-	int* vector = NULL;
-	for (int i = 0; i < 100; i++) {
-		vector_push_back(vector, i);
-	}
-	int* removed = NULL;
-	vector_filter(vector, filter, removed);
-	// vector = [51, 52, 53, ..., 99]
-	// removed = [0, 1, 2, ..., 50]
-	printf("Filtered:\n");
-	for (size_t i = 0; i < vector_size(vector); i++) {
-		printf("%d ", vector[i]);
-	}
-	printf("\nRemoved:\n");
-	for (size_t i = 0; i < vector_size(removed); i++) {
-		printf("%d ", removed[i]);
-	}
-	vector_free(removed);
-	vector_free(vector);
-}
-```
-
-### Append vector
-```c
-#include <stdio.h>
-#include <c_vector/vector_extra.h>
-// #include <c_vector/vector.h> already included in vector_extra.h, but you can
-
-int main() {
-	int* src = NULL;
-	for (int i = 0; i < 100; i++) {
-		vector_push_back(src, i);
-	}
-	int* dest = NULL;
-	vector_append_vector(dest, src); 
-	// dest = [0, 1, 2, 3, 4, 5, ... 99]
-	// src = []
-	for (size_t i = 0; i < vector_size(dest); i++) {
-		printf("%d ", dest[i]);
-	}
-	vector_free(src); 
-	vector_free(dest);
-}
-```
-
-### Append array
-```c
-#include <stdio.h>
-#include <c_vector/vector_extra.h>
-// #include <c_vector/vector.h> already included in vector_extra.h, but you can
-
-int main() {
-	int src[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}; 
-	int* dest = NULL;
-	vector_append_array(dest, src, 10); // this would also work for vectors
-	// dest = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-	// Nothing is done to src, if it was malloced it should be freed
-	// src = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-	for (size_t i = 0; i < vector_size(dest); i++) {
-		printf("%d ", dest[i]);
-	}
-	vector_free(dest);
-}
-```
-
-### To string
-```c
-#include <stdio.h>
-#include <c_vector/vector_extra.h>
-// #include <c_vector/vector.h> already included in vector_extra.h, but you can
-
-char* int_to_string(int value) {
-	char* str = malloc(12); // enough to hold a 32 bit int
-	sprintf(str, "%d", value);
-	return str;
-}
-
-int main() {
-	int* vector = NULL;
-	for (int i = 0; i < 100; i++) {
-		vector_push_back(vector, i);
-	}
-	char* to_string = vector_to_string(vector, int_to_string);
-	// to_string = [0, 1, 2, 3, 4, 5, ..., 99]
-	printf("String:\n%s\n", to_string);
-	vector_free(to_string); // Since to_string is a vector it must be freed
-	vector_free(vector); 
-}
-```
-
-### Find
-```c
-#include <stdio.h>
-#include <c_vector/vector_extra.h>
-// #include <c_vector/vector.h> already included in vector_extra.h, but you can
-
-int int_equals(int x, int y) {
-	return x == y;
-}
-
-int main() {
-	int* vector = NULL;
-	for (int i = 0; i < 100; i++) {
-		vector_push_back(vector, i);
-	}
-	printf("Found 89 = %d\n", vector_find(vector, 89, int_equals)); // 1
-	vector_free(vector); 
-}
-```
-
-### Find index
-```c
-#include <stdio.h>
-#include <c_vector/vector_extra.h>
-// #include <c_vector/vector.h> already included in vector_extra.h, but you can
-
-int int_equals(int x, int y) {
-	return x == y;
-}
-
-int main() {
-	int* vector = NULL;
-	for (int i = 0; i < 10; i++) {
-		vector_push_back(vector, i);
-	}
-	printf("Found 9 = vector[%d]\n", vector_find_index(vector, 9, int_equals)); 
-	// Found 9 = vector[9]
-	printf("Found 100 = vector[%d]\n", vector_find_index(vector, 100, int_equals)); 
-	// Found 100 = vector[10], which is size, aka not found
-	vector_free(vector); 
-}
-```
-
-### Reverse
-```c
-#include <stdio.h>
-#include <c_vector/vector_extra.h>
-// #include <c_vector/vector.h> already included in vector_extra.h, but you can
-
-int main() {
-	int* vector = NULL;
-	for (int i = 0; i < 10; i++) {
-		vector_push_back(vector, i);
-	}
-	printf("Before:\n");
-	for (size_t i = 0; i < vector_size(vector); i++) {
-		printf("%d ", vector[i]);
-	}
-	vector_reverse(vector);
-	printf("\nAfter:\n");
-	for (size_t i = 0; i < vector_size(vector); i++) {
-		printf("%d ", vector[i]);
-	}
-	vector_free(vector); 
-}
 ```
 ## License
 [MIT](license)
