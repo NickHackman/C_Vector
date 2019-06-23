@@ -1,7 +1,7 @@
 # C_Vector
 
 
-Personal interpretation and implementation of `std::vector` trying to maintain generics in C, while maintaining type safety and checks done by the compiler rather than using `void*` **only** 78 lines of code
+Personal interpretation and implementation of `std::vector` trying to maintain generics in C, while maintaining type safety and checks done by the compiler rather than using `void*` **only** 79 lines of code
 
 *This library prefers inlined functions over macros due to their type checking and for better more descriptive function definitions for autocomplete engines, and uses macros only when completely necessary to maintain being generic*
 
@@ -77,7 +77,7 @@ struct X* vector = NULL;
 |vector_shrink_to_fit|modifier|linear|Reallocates `vector` with capacity equivalent to size|[Example](#shrink-to-fit)|
 |vector_reserve|modifier|linear|Increases capacity to new_capacity, as long as it's greater than current capacity|[Example](#reserve)|
 |vector_clear|delete|constant|Sets size to 0, doesn't change capacity|[Example](#clear)|
-|vector_free|free|constant|Frees the array, but not any internal malloced elements|[Example](#free)|
+|vector_free|free|constant|Frees the array, but not any internal malloced elements||
 |vector_size|accessor|constant|Returns the user seen size of the `vector`|[Example](#size)|
 |vector_capacity|accessor| constant|Returns the actual size of the `vector`|[Example](#capacity)|
 |vector_front|accessor|constant|Returns the first element in the `vector` of `TYPE`|[Example](#front)|
@@ -90,11 +90,12 @@ struct X* vector = NULL;
 ```c
 #include <c_vector/vector.h>
 int main() {
-	int* vector = NULL;
-	for (int i = 0; i < 100; i++) {
-		vector_push_back(vector, i);
-	}
-	vector_free(vector);
+    int* vector = NULL;
+    for (int i = 0; i < 100; i++) {
+	    vector_push_back(vector, i);
+    }
+    vector_free(vector);
+    return 0;
 }
 ```
 ### Pop Back
@@ -104,15 +105,16 @@ int main() {
 #include <stdio.h>
 #include <c_vector/vector.h>
 int main() {
-	int* vector = NULL;
-	for (int i = 0; i < 100; i++) {
-		vector_push_back(vector, i);
-	}
-	while (vector_size(vector) > 0) {
-		printf("%d ", vector_pop_back(vector));
-	}
-	printf("Capacity = %lu\n", vector_capacity(vector)); // 192
-	vector_free(vector);
+    int* vector = NULL;
+    for (int i = 0; i < 100; i++) {
+	    vector_push_back(vector, i);
+    }
+    while (vector_size(vector) > 0) {
+	    printf("%d ", vector_pop_back(vector));
+    }
+    printf("Capacity = %lu\n", vector_capacity(vector)); // 192
+    vector_free(vector);
+    return 0;
 }
 ```
 **[VECTOR_SHRINK_ON_REMOVE]**
@@ -121,15 +123,16 @@ int main() {
 #include <stdio.h>
 #include <c_vector/vector.h>
 int main() {
-	int* vector = NULL;
-	for (int i = 0; i < 100; i++) {
-		vector_push_back(vector, i);
-	}
-	while (vector_size(vector) > 0) {
-		printf("%d ", vector_pop_back(vector));
-	}
-	printf("Capacity = %lu\n", vector_capacity(vector)); // 1
-	vector_free(vector);
+    int* vector = NULL;
+    for (int i = 0; i < 100; i++) {
+	    vector_push_back(vector, i);
+    }
+    while (vector_size(vector) > 0) {
+	    printf("%d ", vector_pop_back(vector));
+    }
+    printf("Capacity = %lu\n", vector_capacity(vector)); // 1
+    vector_free(vector);
+    return 0;
 }
 ```
 ### Shrink To Fit
@@ -137,15 +140,16 @@ int main() {
 #include <stdio.h>
 #include <c_vector/vector.h>
 int main() {
-	int* vector* = NULL;
-	for (int i = 0; i < 100; i++) {
-		vector_push_back(vector, i);
-	}
-	printf("Size = %lu\n", vector_size(vector)); // 100
-	printf("Capacity Before Shrink = %lu\n", vector_capacity(vector)); // 192
-	vector_shrink_to_fit(vector);
-	printf("Capacity After Shrink = %lu\n", vector_capacity(vector)); // 100
-	vector_free(vector);
+    int* vector* = NULL;
+    for (int i = 0; i < 100; i++) {
+	    vector_push_back(vector, i);
+    }
+    printf("Size = %lu\n", vector_size(vector)); // 100
+    printf("Capacity Before Shrink = %lu\n", vector_capacity(vector)); // 192
+    vector_shrink_to_fit(vector);
+    printf("Capacity After Shrink = %lu\n", vector_capacity(vector)); // 100
+    vector_free(vector);
+    return 0;
 }
 ```
 ### Reserve
@@ -153,15 +157,16 @@ int main() {
 #include <stdio.h>
 #include <c_vector/vector.h>
 int main() {
-	int* vector* = NULL;
-	vector_reserve(vector, 101); // prevents any allocations from push_back
-	for (int i = 0; i < 100; i++) {
-		vector_push_back(vector, i);
-	}
-	printf("Capacity = %lu\n", vector_capacity(vector)); // 101
-	vector_reserve(vector, 10); // Does nothing, 10 isn't greater than 101
-	printf("Capacity = %lu\n", vector_capacity(vector)); // 101
-	vector_free(vector);
+    int* vector* = NULL;
+    vector_reserve(vector, 101); // prevents any allocations from push_back
+    for (int i = 0; i < 100; i++) {
+	    vector_push_back(vector, i);
+    }
+    printf("Capacity = %lu\n", vector_capacity(vector)); // 101
+    vector_reserve(vector, 10); // Does nothing, 10 isn't greater than 101
+    printf("Capacity = %lu\n", vector_capacity(vector)); // 101
+    vector_free(vector);
+    return 0;
 }
 ```
 ### Init
@@ -169,14 +174,15 @@ int main() {
 #include <stdio.h>
 #include <c_vector/vector.h>
 int main() {
-	int* vector* = vector_init(int, 101); // vector_init isn't mandatory, but is equivalent to
-	// int* vector = NULL;
-	// vector_reserve(vector, 101); but in 1 statement
-	for (int i = 0; i < 100; i++) {
-		vector_push_back(vector, i);
-	}
-	printf("Capacity = %lu\n", vector_capacity(vector)); // 101
-	vector_free(vector);
+    int* vector* = vector_init(int, 101); // vector_init isn't mandatory, but is equivalent to
+    // int* vector = NULL;
+    // vector_reserve(vector, 101); but in 1 statement
+    for (int i = 0; i < 100; i++) {
+	    vector_push_back(vector, i);
+    }
+    printf("Capacity = %lu\n", vector_capacity(vector)); // 101
+    vector_free(vector);
+    return 0;
 }
 ```
 ### Clear
@@ -184,81 +190,93 @@ int main() {
 #include <stdio.h>
 #include <c_vector/vector.h>
 int main() {
-	int* vector* = NULL;
-	for (int i = 0; i < 100; i++) {
-		vector_push_back(vector, i);
-	}
-	printf("Size = %lu\n", vector_size(vector)); // 100
-	vector_clear(vector);
-	printf("Size = %lu\n", vector_size(vector)); // 0
-	printf("Capacity = %lu\n", vector_capacity(vector)); // 192
-	// Not advised
-	printf("vector[100] = %d\n", vector[100]); // 99
-	// Values are never cleared they are just treated as if they don't exist
-	vector_free(vector);
+    int* vector* = NULL;
+    for (int i = 0; i < 100; i++) {
+	    vector_push_back(vector, i);
+    }
+    printf("Size = %lu\n", vector_size(vector)); // 100
+    vector_clear(vector);
+    printf("Size = %lu\n", vector_size(vector)); // 0
+    printf("Capacity = %lu\n", vector_capacity(vector)); // 192
+    // Not advised
+    printf("vector[100] = %d\n", vector[100]); // 99
+    // Values are never cleared they are just treated as if they don't exist
+    vector_free(vector);
+    return 0;
+}
 ```
 ### Size
 ```c
 #include <stdio.h>
 #include <c_vector/vector.h>
 int main() {
-	int* vector* = NULL;
-	for (int i = 0; i < 100; i++) {
-		vector_push_back(vector, i);
-	}
-	printf("Size = %lu\n", vector_size(vector)); // 100
-	vector_free(vector);
+    int* vector* = NULL;
+    for (int i = 0; i < 100; i++) {
+	    vector_push_back(vector, i);
+    }
+    printf("Size = %lu\n", vector_size(vector)); // 100
+    vector_free(vector);
+    return 0;
+}
 ```
 ### Capacity
 ```c
 #include <stdio.h>
 #include <c_vector/vector.h>
 int main() {
-	int* vector* = NULL;
-	for (int i = 0; i < 100; i++) {
-		vector_push_back(vector, i);
-	}
-	printf("Size = %lu\n", vector_capacity(vector)); // 192
-	vector_free(vector);
+    int* vector* = NULL;
+    for (int i = 0; i < 100; i++) {
+	    vector_push_back(vector, i);
+    }
+    printf("Size = %lu\n", vector_capacity(vector)); // 192
+    vector_free(vector);
+    return 0;
+}
 ```
 ### Front
 ```c
 #include <stdio.h>
 #include <c_vector/vector.h>
 int main() {
-	int* vector* = NULL;
-	for (int i = 0; i < 100; i++) {
-		vector_push_back(vector, i);
-	}
-	// Equivanlent to vector[0], but returns 0/NULL if vector == NULL
-	printf("Front = %d\n", vector_front(vector)); // 0
-	vector_free(vector);
+    int* vector* = NULL;
+    for (int i = 0; i < 100; i++) {
+	    vector_push_back(vector, i);
+    }
+    // Equivanlent to vector[0], but returns 0/NULL if vector == NULL or is empty
+    printf("Front = %d\n", vector_front(vector)); // 0
+    vector_free(vector);
+    return 0;
+}
 ```
 ### Back
 ```c
 #include <stdio.h>
 #include <c_vector/vector.h>
 int main() {
-	int* vector* = NULL;
-	for (int i = 0; i < 100; i++) {
-		vector_push_back(vector, i);
-	}
-	// Equivanlent to vector[vector_size(vector) - 1], but returns 0/NULL if vector == NULL
-	printf("Back = %d\n", vector_back(vector)); // 99
-	vector_free(vector);
+    int* vector* = NULL;
+    for (int i = 0; i < 100; i++) {
+	    vector_push_back(vector, i);
+    }
+    // Equivanlent to vector[vector_size(vector) - 1], but returns 0/NULL if vector == NULL or is empty
+    printf("Back = %d\n", vector_back(vector)); // 99
+    vector_free(vector);
+    return 0;
+}
 ```
 ### Empty
 ```c
 #include <stdio.h>
 #include <c_vector/vector.h>
 int main() {
-	int* vector* = NULL;
-	printf("Vector is empty: %d\n", vector_empty(vector)); // Vector is empty: 1
-	for (int i = 0; i < 100; i++) {
-		vector_push_back(vector, i);
-	}
-	printf("Vector is empty: %d\n", vector_empty(vector)); // Vector is empty: 0
-	vector_free(vector);
+    int* vector* = NULL;
+    printf("Vector is empty: %d\n", vector_empty(vector)); // Vector is empty: 1
+    for (int i = 0; i < 100; i++) {
+	    vector_push_back(vector, i);
+    }
+    printf("Vector is empty: %d\n", vector_empty(vector)); // Vector is empty: 0
+    vector_free(vector);
+    return 0;
+}
 ```
 ## License
 [MIT](license)

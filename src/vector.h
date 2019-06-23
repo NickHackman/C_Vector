@@ -1,24 +1,25 @@
 /**************************************************************************************************
- * License: MIT                                                                                   *
+ * License: MIT *
  **************************************************************************************************
- * Copyright 2019 Scott Nicholas Hackman                                                          *
- *                                                                                                *
- * Permission is hereby granted, free of charge, to any person obtaining                          *
- * a copy of this software and associated documentation files (the "Software"),                   *
- * to deal in the Software without restriction, including without limitation                      *
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,                       *
- * and/or sell copies of the Software, and to permit persons to whom the                          *
- * Software is furnished to do so, subject to the following conditions:                           *
- *                                                                                                *
- * The above copyright notice and this permission notice shall be included                        *
- * in all copies or substantial portions of the Software.                                         *
- *                                                                                                *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS                        *
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,                    *
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL                        *
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER                     *
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,                  *
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.        *
+ * Copyright 2019 Scott Nicholas Hackman
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ *copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  **************************************************************************************************/
 
 #ifndef VECTOR_H
@@ -28,7 +29,6 @@
 
 /*
  * C_Vector a typesafe dynamic array that resembles std::vector
- * split into 2 separate header files (core, extra)
  *
  * use #define VECTOR_SHRINK_ON_REMOVE for armotirized constant time
  * decrease of capacity, saving memory.
@@ -38,7 +38,7 @@
  * vector[-1] = capacity
  *
  *
- * Internally: 
+ * Internally:
  *
  * User pointer -------|
  *                     v
@@ -52,7 +52,7 @@
  *
  * Core Library Functions:
  * 		Accessors:
- * 			empty, size, capacity, front, back	
+ * 			empty, size, capacity, front, back
  *
  * 		Modifier:
  * 			push_back, pop_back, shrink_to_fit,
@@ -64,14 +64,14 @@
  * int* x = NULL; // this could be char* or char**, double*, etc       |
  * printf("x is empty: %d", vector_empty(x));                          |
  * for (int i = 0; i < 100; i++) {                                     |
- * 		vector_push_back(x, i);                                        |
+ *      vector_push_back(x, i);                                        |
  * }                                                                   |
  *                                                                     |
  * for (int i = 0; i < vector_size(x); i++) {                          |
- * 		printf("%d", x[i]);                                            |
- * 		if (i < (vector_size(x) - 1)) {                                |
- *			printf(", ");                                              |
- * 		}                                                              |
+ *      printf("%d", x[i]);                                            |
+ * 	if (i < (vector_size(x) - 1)) {                                |
+ *	        printf(", ");                                          |
+ *	}                                                              |
  * }                                                                   |
  *                                                                     |
  * printf("Capacity before shrink = %lu\n", vector_capacity(x));       |
@@ -79,7 +79,7 @@
  * printf("Capacity after shrink = %lu\n\n", vector_capacity(x));      |
  *                                                                     |
  * while (vector_size(x) > 0) {                                        |
- * 		printf("Removed %d\n", vector_pop_back(x));                    |
+ *      printf("Removed %d\n", vector_pop_back(x));                    |
  * }                                                                   |
  *                                                                     |
  * vector_free(x);                                                     |
@@ -106,21 +106,21 @@
  *
  * 	Return: size_t, the size of the vector
  */
-static inline size_t vector_size(void* vector) {
-	if (vector) {
-		return ((size_t*)vector)[-2];
-	} 
-	return 0;
+static inline size_t vector_size(void *vector) {
+  if (vector) {
+    return ((size_t *)vector)[-2];
+  }
+  return 0;
 }
 
 /*
  * Internal function:
  * sets size of Vector to size
  */
-static inline void __vector_set_size(void* vector, size_t size) {
-	if (vector) {
-		((size_t*)vector)[-2] = (size_t)size;
-	}
+static inline void __vector_set_size(void *vector, size_t size) {
+  if (vector) {
+    ((size_t *)vector)[-2] = (size_t)size;
+  }
 }
 
 /*
@@ -140,21 +140,21 @@ static inline void __vector_set_size(void* vector, size_t size) {
  *
  * 	Return: size_t, the capacity of the vector
  */
-static inline size_t vector_capacity(void* vector) {
-	if (vector) {
-		return ((size_t*)(vector))[-1];
-	}
-	return 0;
+static inline size_t vector_capacity(void *vector) {
+  if (vector) {
+    return ((size_t *)(vector))[-1];
+  }
+  return 0;
 }
 
 /*
  * Internal function:
  * sets capacity of Vector to capacity
  */
-static inline void __vector_set_capacity(void* vector, size_t capacity) {
-	if (vector) {
-		((size_t*)vector)[-1] = (size_t)capacity;
-	}
+static inline void __vector_set_capacity(void *vector, size_t capacity) {
+  if (vector) {
+    ((size_t *)vector)[-1] = (size_t)capacity;
+  }
 }
 
 /*
@@ -174,10 +174,10 @@ static inline void __vector_set_capacity(void* vector, size_t capacity) {
  *
  * 	Return: void
  */
-#define vector_free(vector) \
-	if (vector) { \
-		free(&((size_t*)(vector))[-2]); \
-	}
+#define vector_free(vector)                                                    \
+  if (vector) {                                                                \
+    free(&((size_t *)(vector))[-2]);                                           \
+  }
 
 /*
  * Description: Inserts at the end of the provided vector data
@@ -194,17 +194,20 @@ static inline void __vector_set_capacity(void* vector, size_t capacity) {
  *
  * Memory:
  * 	Case of self->capacity == self->size:
- * 		sizeof(*(vector)) bytes * 2 * self->capacity + 2 * sizeof(size_t)
+ * 		sizeof(*(vector)) bytes * 2 * self->capacity + 2 *
+ * sizeof(size_t)
  *
  * 	Return: void
  */
-#define vector_push_back(vector, value) \
-	if (vector_capacity(vector) <= (vector_size(vector) + 1)) { \
-		vector = __vector_alloc(vector, (vector) ? ((size_t)(2 * \
-				vector_capacity(vector))) : ((size_t)12), sizeof(*(vector))); \
-	} \
-	vector[vector_size(vector)] = (value); \
-	__vector_set_size(vector, vector_size(vector) + 1);
+#define vector_push_back(vector, value)                                        \
+  if (vector_capacity(vector) <= (vector_size(vector) + 1)) {                  \
+    vector = __vector_alloc(vector,                                            \
+                            (vector) ? ((size_t)(2 * vector_capacity(vector))) \
+                                     : ((size_t)12),                           \
+                            sizeof(*(vector)));                                \
+  }                                                                            \
+  vector[vector_size(vector)] = (value);                                       \
+  __vector_set_size(vector, vector_size(vector) + 1);
 
 /*
  * Internal function:
@@ -222,13 +225,15 @@ static inline void __vector_set_capacity(void* vector, size_t capacity) {
  * Set capacity to new_size
  * return pointer to new vector
  */
-static inline void* __vector_alloc(void* vector, size_t new_capacity, size_t size_of_item) {
-	size_t size = ((vector) ? vector_size(vector) : 0);
-	size_t* new_array = realloc(vector ? &(((size_t*)vector)[-2]) :
-			NULL, size_of_item * new_capacity + 2 * sizeof(size_t));
-	new_array[0] = size;
-	new_array[1] = new_capacity;
-	return (&new_array[2]);
+static inline void *__vector_alloc(void *vector, size_t new_capacity,
+                                   size_t size_of_item) {
+  size_t size = ((vector) ? vector_size(vector) : 0);
+  size_t *new_array =
+      (size_t *)realloc(vector ? &(((size_t *)vector)[-2]) : NULL,
+                        size_of_item * new_capacity + 2 * sizeof(size_t));
+  new_array[0] = size;
+  new_array[1] = new_capacity;
+  return (&new_array[2]);
 }
 
 /*
@@ -250,8 +255,8 @@ static inline void* __vector_alloc(void* vector, size_t new_capacity, size_t siz
  * 		1: is empty or is NULL
  * 		0: isn't empty
  */
-static inline int vector_empty(void* vector) {
-	return vector_size(vector) == 0;
+static inline int vector_empty(void *vector) {
+  return vector_size(vector) == 0;
 }
 
 /*
@@ -271,14 +276,14 @@ static inline int vector_empty(void* vector) {
  * Memory:
  *
  * 	2 * sizeof(size_t) + new_capacity * sizeof(*(vector))
- * 		
+ *
  *
  * Return: void
  */
-#define vector_reserve(vector, new_capacity) \
-	if ((new_capacity) >= vector_capacity(vector)) { \
-		vector = __vector_alloc((vector), (new_capacity), sizeof(*(vector))); \
-	}
+#define vector_reserve(vector, new_capacity)                                   \
+  if ((new_capacity) >= vector_capacity(vector)) {                             \
+    vector = __vector_alloc((vector), (new_capacity), sizeof(*(vector)));      \
+  }
 
 /*
  * Description: Sets size to 0, capacity remains the same
@@ -297,9 +302,7 @@ static inline int vector_empty(void* vector) {
  *
  * 	Return: void
  */
-static inline void vector_clear(void* vector) {
-	__vector_set_size(vector, 0);
-}
+static inline void vector_clear(void *vector) { __vector_set_size(vector, 0); }
 
 /*
  * Description: Creates a new vector with a capacity = to the provided capacity
@@ -320,8 +323,8 @@ static inline void vector_clear(void* vector) {
  *
  * 	Return: void* (the new vector)
  */
-#define vector_init(type, capacity) \
-	__vector_alloc(NULL, capacity, sizeof(type));
+#define vector_init(type, capacity)                                            \
+  __vector_alloc(NULL, capacity, sizeof(type));
 
 /*
  * Description: Returns the last element in the Vector
@@ -340,8 +343,7 @@ static inline void vector_clear(void* vector) {
  *
  * 	Return: value of the last element, or 0\NULL if empty
  */
-#define vector_back(vector) \
-	((vector) ? (vector)[vector_size(vector) - 1] : 0)
+#define vector_back(vector) ((vector) ? (vector)[vector_size(vector) - 1] : 0)
 
 /*
  * Description: Returns the first element in the Vector
@@ -360,11 +362,10 @@ static inline void vector_clear(void* vector) {
  *
  * 	Return: value of the first element or 0\NULL if empty
  */
-#define vector_front(vec) \
-	((vector) ? (vector)[0] : 0)
+#define vector_front(vec) ((vector) ? (vector)[0] : 0)
 
 /*
- * Description: Shrinks the capacity to the size 
+ * Description: Shrinks the capacity to the size
  *
  * Type: Modifier (resize)
  *
@@ -380,10 +381,11 @@ static inline void vector_clear(void* vector) {
  *
  * 	Return: void
  */
-#define vector_shrink_to_fit(vector) \
-	if (vector) { \
-		vector = __vector_alloc((vector), vector_size((vector)), sizeof(*(vector))); \
-	}
+#define vector_shrink_to_fit(vector)                                           \
+  if (vector) {                                                                \
+    vector =                                                                   \
+        __vector_alloc((vector), vector_size((vector)), sizeof(*(vector)));    \
+  }
 
 #ifdef VECTOR_SHRINK_ON_REMOVE
 
@@ -404,19 +406,20 @@ static inline void vector_clear(void* vector) {
  *
  * 	Return: last value in vector, must be freed
  */
-#define vector_pop_back(vector) \
-	({ \
-		if ((vector_capacity(vector) / 4) >= (vector_size(vector) - 1)) { \
-			vector = __vector_alloc(vector, vector_capacity(vector) / 2, \
-					sizeof(*(vector))); \
-		} \
-		((vector) ? (vector)[(((size_t*)(vector))[-2]--) - 1] : 0); \
-	})
+#define vector_pop_back(vector)                                                \
+  ({                                                                           \
+    if ((vector_capacity(vector) / 4) >= (vector_size(vector) - 1)) {          \
+      vector = __vector_alloc(vector, vector_capacity(vector) / 2,             \
+                              sizeof(*(vector)));                              \
+    }                                                                          \
+    ((vector) ? (vector)[(((size_t *)(vector))[-2]--) - 1] : 0);               \
+  })
 
 #else
 
 /*
- * Description: Deletes the element at the end of the provided vector, or returns 0/NULL
+ * Description: Deletes the element at the end of the provided vector, or
+ * returns 0/NULL
  *
  * Type: Modifier (Deletion)
  *
@@ -431,11 +434,9 @@ static inline void vector_clear(void* vector) {
  *
  * 	Return: last value in vector, must be freed, or returns 0/NULL
  */
-#define vector_pop_back(vector) \
-	((vector) ? (vector)[(((size_t*)(vector))[-2]--) - 1] : 0)
+#define vector_pop_back(vector)                                                \
+  ((vector) ? (vector)[(((size_t *)(vector))[-2]--) - 1] : 0)
 
-
-#endif //VECTOR_SHRINK_ON_REMOVE
-
+#endif // VECTOR_SHRINK_ON_REMOVE
 
 #endif // VECTOR_H
