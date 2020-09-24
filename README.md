@@ -58,12 +58,8 @@ vector = &(new_vector[2])
 #### Initialization
 
 ```c
-int* vector = NULL;
-char* vector = NULL;
-char** vector = NULL;
-double* vector = NULL;
-struct X* vector = NULL;
-// etc
+int* vector = vector_init(int, 12);
+char* string = vector_init(char, 32);
 ```
 
 ## Functions
