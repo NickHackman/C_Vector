@@ -37,9 +37,6 @@ clean:
 
 .PHONY: test
 test:
-	@gcc ./tests/core_test.c -o test_core
-	@echo "Starting Testing"
-	@echo ""
-	@echo "Testing c_vector Core"
-	@./test_core
-	@$(RM) test_core
+	@clang ./tests/test.c -lcmocka -o test
+	@./test
+	@$(RM) test

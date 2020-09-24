@@ -11,7 +11,7 @@ mkShell {
     pkg-config
     ccls
     clang
-    cmake
+    cmocka
 
     # Markdown
     pandoc
