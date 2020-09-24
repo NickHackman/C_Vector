@@ -68,6 +68,7 @@ char* string = vector_init(char, 32);
 
 | Function                                      | Type     | Time Complexity    | Description                                                                                                            | Example                   |
 | --------------------------------------------- | -------- | ------------------ | ---------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| vector_init                                   | init     | constant           | Creates a new vector with a given capacity. **Not Mandatory**                                                          | [Example](#init)          |
 | vector_push_back                              | insert   | armotized constant | Added a new element of `TYPE` to the end of the `vector`                                                               | [Example](#push-back)     |
 | **[DEFAULT]** vector_pop_back                 | delete   | constant           | Removes the last element from the `vector`, doesn't decrease capacity                                                  | [Example](#pop-back)      |
 | **[VECTOR_SHRINK_ON_REMOVE]** vector_pop_back | delete   | armotized constant | Must `#define VECTOR_SHRINK_ON_REMOVE`. Removes the last element, but shrinks the capacity when `size == capacity / 4` | [Example](#pop-back)      |
@@ -79,9 +80,26 @@ char* string = vector_init(char, 32);
 | vector_capacity                               | accessor | constant           | Returns the actual size of the `vector`                                                                                | [Example](#capacity)      |
 | vector_front                                  | accessor | constant           | Returns the first element in the `vector` of `TYPE`                                                                    | [Example](#front)         |
 | vector_empty                                  | accessor | constant           | Returns `true` if the vector is `NULL` or its size is 0                                                                | [Example](#empty)         |
-| vector_init                                   | init     | constant           | Creates a new vector with a given capacity. **Not Mandatory**                                                          | [Example](#init)          |
 
 ## Examples
+
+### Init
+
+```c
+#include <stdio.h>
+#include <c_vector/vector.h>
+int main() {
+    int* vector = vector_init(int, 101); // vector_init isn't mandatory, but is equivalent to
+    // int* vector = NULL;
+    // vector_reserve(vector, 101); but in 1 statement
+    for (int i = 0; i < 100; i++) {
+	    vector_push_back(vector, i);
+    }
+    printf("Capacity = %lu\n", vector_capacity(vector)); // 101
+    vector_free(vector);
+    return 0;
+}
+```
 
 ### Push Back
 
@@ -170,24 +188,6 @@ int main() {
     }
     printf("Capacity = %lu\n", vector_capacity(vector)); // 101
     vector_reserve(vector, 10); // Does nothing, 10 isn't greater than 101
-    printf("Capacity = %lu\n", vector_capacity(vector)); // 101
-    vector_free(vector);
-    return 0;
-}
-```
-
-### Init
-
-```c
-#include <stdio.h>
-#include <c_vector/vector.h>
-int main() {
-    int* vector = vector_init(int, 101); // vector_init isn't mandatory, but is equivalent to
-    // int* vector = NULL;
-    // vector_reserve(vector, 101); but in 1 statement
-    for (int i = 0; i < 100; i++) {
-	    vector_push_back(vector, i);
-    }
     printf("Capacity = %lu\n", vector_capacity(vector)); // 101
     vector_free(vector);
     return 0;
