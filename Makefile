@@ -38,13 +38,8 @@ clean:
 .PHONY: test
 test:
 	@gcc ./tests/core_test.c -o test_core
-	@gcc ./tests/extra_test.c -o test_extra
 	@echo "Starting Testing"
 	@echo ""
 	@echo "Testing c_vector Core"
 	@./test_core
 	@$(RM) test_core
-	@echo ""
-	@echo "Testing c_vector Extra"
-	@./test_extra
-	@$(RM) test_extra
