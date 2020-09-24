@@ -1,0 +1,12 @@
+name: test
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: install cmocka
+        run: sudo apt-get install libcmocka-dev
+
+      - uses: actions/checkout@v2
+      - run: make test
