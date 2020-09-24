@@ -1,5 +1,7 @@
 # C_Vector
 
+![test](https://github.com/NickHackman/C_Vector/workflows/test/badge.svg)
+
 Personal interpretation and implementation of `std::vector` trying to maintain generics in C, while maintaining type safety and checks done by the compiler rather than using `void*` **only** 79 lines of code
 
 _This library prefers inlined functions over macros due to their type checking and for better more descriptive function definitions for autocomplete engines, and uses macros only when completely necessary to maintain being generic_
