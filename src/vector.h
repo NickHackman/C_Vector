@@ -68,10 +68,10 @@
  * }                                                                   |
  *                                                                     |
  * for (int i = 0; i < vector_size(x); i++) {                          |
- *      printf("%d", x[i]);                                            |
- * 	if (i < (vector_size(x) - 1)) {                                |
- *	        printf(", ");                                          |
- *	}                                                              |
+ *   printf("%d", x[i]);                                               |
+ *   if (i < (vector_size(x) - 1)) {                                   |
+ *     printf(", ");                                                   |
+ *   }                                                                 |
  * }                                                                   |
  *                                                                     |
  * printf("Capacity before shrink = %lu\n", vector_capacity(x));       |
