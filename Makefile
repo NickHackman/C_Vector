@@ -17,7 +17,7 @@ default_target:
 	@echo "C_Vector Options:"
 	@printf "\tmake install \n\t\t Install c_vector headers on a Linux machine [Requires Root]\n"
 	@printf "\tmake clean \n\t\t Remove c_vector headers on a Linux machine [Requires Root]\n"
-	@printf "\tmake test \\n\t\t Run the test cases for both core and extra\n"
+	@printf "\tmake test \\n\t\t Run the test cases\n"
 
 .PHONY: install
 install:
